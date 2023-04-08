@@ -28,6 +28,7 @@ let maxTemperature = 5;
 let maxLifetime = 2;
 let emissionRate = 3;
 let buoyancyConstant = -100; // Adjust this value to control the buoyancy strength
+let particleSize = 10;
 
 let numParticles = 50;
 const particles = [];
@@ -83,6 +84,11 @@ document.getElementById('buoyancyConstant').addEventListener('input', function (
     document.getElementById('buoyancyConstantValue').textContent = buoyancyConstant;
 });
 
+document.getElementById('particleSize').addEventListener('input', function (event) {
+    particleSize = parseFloat(event.target.value);
+    document.getElementById('particleSizeValue').textContent = particleSize;
+});
+
 // Set the initial values for the labels
 document.getElementById('smoothingRadiusValue').textContent = smoothingRadius;
 document.getElementById('massValue').textContent = mass;
@@ -93,6 +99,7 @@ document.getElementById('maxLifetimeValue').textContent = maxLifetime;
 document.getElementById('numParticlesValue').textContent = numParticles;
 document.getElementById('emissionRateValue').textContent = emissionRate;
 document.getElementById('buoyancyConstantValue').textContent = buoyancyConstant;
+document.getElementById('particleSizeValue').textContent = particleSize;
 
 for (let i = 0; i < numParticles; i++) {
     const x = Math.random() * canvas.width;
@@ -207,11 +214,12 @@ function updateParticles() {
 const vertexShaderSource = `
     attribute vec2 a_position;
     uniform vec2 u_resolution;
+    uniform float u_particleSize;
 
     void main() {
         vec2 position = (a_position / u_resolution) * 2.0 - 1.0;
         gl_Position = vec4(position, 0, 1);
-        gl_PointSize = 10.0;
+        gl_PointSize = u_particleSize;
     }
 `;
 
@@ -264,7 +272,7 @@ function drawParticles(particles) {
         data[i * 3 + 2] = particles[i].temperature;
     }
     gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
-
+    
     // Set up the WebGL viewport and clear the color buffer
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(0, 0, 0, 1);
@@ -274,6 +282,7 @@ function drawParticles(particles) {
     gl.useProgram(program);
     gl.uniform2f(resolutionUniformLocation, canvas.width, canvas.height);
     gl.uniform1f(gl.getUniformLocation(program, 'u_maxTemperature'), maxTemperature);
+    gl.uniform1f(gl.getUniformLocation(program, 'u_particleSize'), particleSize);
     gl.enableVertexAttribArray(positionAttributeLocation);
     gl.vertexAttribPointer(positionAttributeLocation, 3, gl.FLOAT, false, 0, 0);
 
