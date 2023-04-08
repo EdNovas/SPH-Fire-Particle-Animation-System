@@ -19,18 +19,21 @@ class Particle {
 }
 
 const timeStep = 0.01;
-let smoothingRadius = 20;
+let smoothingRadius = 3;
 let mass = 1;
-let gasConstant = 400;
+let gasConstant = 8000;
 let viscosity = 1;
 let gravity = -9.8;
 let maxTemperature = 5;
 let maxLifetime = 2;
-let emissionRate = 3;
-let buoyancyConstant = -100; // Adjust this value to control the buoyancy strength
+let emissionRate = 50;
+let buoyancyConstant = -150;
 let particleSize = 10;
+let fireSourceY = 0;
+let emitVelocity = 50;
+let fireSourceRange = 50;
 
-let numParticles = 50;
+let numParticles = 800;
 const particles = [];
 
 // Create event listeners for the sliders
@@ -89,6 +92,21 @@ document.getElementById('particleSize').addEventListener('input', function (even
     document.getElementById('particleSizeValue').textContent = particleSize;
 });
 
+document.getElementById('fireSourceY').addEventListener('input', function (event) {
+    fireSourceY = parseFloat(event.target.value);
+    document.getElementById('fireSourceYValue').textContent = fireSourceY;
+});
+
+document.getElementById('emitVelocity').addEventListener('input', function (event) {
+    emitVelocity = parseFloat(event.target.value);
+    document.getElementById('emitVelocityValue').textContent = emitVelocity;
+});
+
+document.getElementById('fireSourceRange').addEventListener('input', function (event) {
+    fireSourceRange = parseFloat(event.target.value);
+    document.getElementById('fireSourceRangeValue').textContent = fireSourceRange;
+});
+
 // Set the initial values for the labels
 document.getElementById('smoothingRadiusValue').textContent = smoothingRadius;
 document.getElementById('massValue').textContent = mass;
@@ -100,6 +118,9 @@ document.getElementById('numParticlesValue').textContent = numParticles;
 document.getElementById('emissionRateValue').textContent = emissionRate;
 document.getElementById('buoyancyConstantValue').textContent = buoyancyConstant;
 document.getElementById('particleSizeValue').textContent = particleSize;
+document.getElementById('fireSourceYValue').textContent = fireSourceY;
+document.getElementById('emitVelocityValue').textContent = emitVelocity;
+document.getElementById('fireSourceRangeValue').textContent = fireSourceRange;
 
 for (let i = 0; i < numParticles; i++) {
     const x = Math.random() * canvas.width;
@@ -110,13 +131,13 @@ for (let i = 0; i < numParticles; i++) {
 }
 
 function emitParticles(emissionRate) {
-    const fireSourceX = canvas.width / 2;
-    const fireSourceY = 0;
+
+    const fireSourceX = Math.floor(Math.random() * fireSourceRange) - (fireSourceRange/2) + (canvas.width / 2);
     for (let i = 0; i < emissionRate; i++) {
         const temperature = Math.random() * maxTemperature;
         const lifetime = Math.random() * maxLifetime;
         const particle = new Particle(fireSourceX, fireSourceY, temperature, lifetime);
-        particle.velocity.x = (Math.random() - 0.5) * 50;
+        particle.velocity.x = (Math.random() - 0.5) * emitVelocity;
         particles.push(particle);
     }
 }
@@ -141,17 +162,17 @@ function viscosityLaplacianKernel(r, h) {
 
 function computeDensityAndPressure() {
     for (let i = 0; i < numParticles; i++) {
-      let density = 0;
-    for (let j = 0; j < numParticles; j++) {
-        const dx = particles[i].position.x - particles[j].position.x;
-        const dy = particles[i].position.y - particles[j].position.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < smoothingRadius) {
-            density += mass * poly6Kernel(distance, smoothingRadius);
+        let density = 0;
+        for (let j = 0; j < numParticles; j++) {
+            const dx = particles[i].position.x - particles[j].position.x;
+            const dy = particles[i].position.y - particles[j].position.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < smoothingRadius) {
+                density += mass * poly6Kernel(distance, smoothingRadius);
+            }
         }
-    }
-    particles[i].density = density;
-    particles[i].pressure = gasConstant * (density - 1);
+        particles[i].density = density;
+        particles[i].pressure = gasConstant * (density - 1);
     }
 }
 
