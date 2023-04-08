@@ -19,25 +19,58 @@
     <div id="container">
         <canvas id="canvas" width="600" height="600"></canvas>
         <div id="sidebar">
+            <br>
             <div class="slider-container">
-                <label for="smoothingRadius">Smoothing Radius: </label>
-                <input type="range" id="smoothingRadius" min="2" max="1000" value="20" step="10"><span id="smoothingRadiusValue"></span>
+                <label for="numParticles">Number of Particles: </label>
+                <input type="range" id="numParticles" min="10" max="800" value="800" step="1"><span id="numParticlesValue"></span>
+            </div>
+            <div class="slider-container">
+                <label for="particleSize">Particle Size: </label>
+                <input type="range" id="particleSize" min="1" max="30" value="10" step="1"><span id="particleSizeValue"></span>
             </div>
             <div class="slider-container">
                 <label for="mass">Particle Mass: </label>
                 <input type="range" id="mass" min="1" max="500" value="1" step="10"><span id="massValue"></span>
             </div>
             <div class="slider-container">
+                <label for="smoothingRadius">Smoothing Radius: </label>
+                <input type="range" id="smoothingRadius" min="2" max="35" value="3" step="1"><span id="smoothingRadiusValue"></span>
+            </div>
+            <div class="slider-container">
                 <label for="gasConstant">Gas Constant: </label>
-                <input type="range" id="gasConstant" min="1" max="40000" value="400" step="10"><span id="gasConstantValue"></span>
+                <input type="range" id="gasConstant" min="1" max="40000" value="8000" step="10"><span id="gasConstantValue"></span>
             </div>
             <div class="slider-container">
                 <label for="viscosity">Viscosity: </label>
-                <input type="range" id="viscosity" min="0" max="10000" value="1" step="1"><span id="viscosityValue"></span>
+                <input type="range" id="viscosity" min="0" max="200" value="1" step="1"><span id="viscosityValue"></span>
             </div>
             <div class="slider-container">
                 <label for="gravity">Gravity: </label>
                 <input type="range" id="gravity" min="-20" max="0" value="-9.8" step="-0.1"><span id="gravityValue"></span>
+            </div>
+            <div class="slider-container">
+                <label for="buoyancyConstant">Buoyancy Constant: </label>
+                <input type="range" id="buoyancyConstant" min="-200" max="-10" value="-150" step="1"><span id="buoyancyConstantValue"></span>
+            </div>
+            <div class="slider-container">
+                <label for="maxLifetime">Max Lifetime: </label>
+                <input type="range" id="maxLifetime" min="1.1" max="5" value="2" step="0.1"><span id="maxLifetimeValue"></span>
+            </div>
+            <div class="slider-container">
+                <label for="emissionRate">Emission Rate: </label>
+                <input type="range" id="emissionRate" min="10" max="100" value="50" step="1"><span id="emissionRateValue"></span>
+            </div>
+            <div class="slider-container">
+                <label for="emitVelocity">Emit Velocity: </label>
+                <input type="range" id="emitVelocity" min="50" max="150" value="50" step="1"><span id="emitVelocityValue"></span>
+            </div>
+            <div class="slider-container">
+                <label for="fireSourceY">Fire Source Y: </label>
+                <input type="range" id="fireSourceY" min="0" max="600" value="0" step="10"><span id="fireSourceYValue"></span>
+            </div>
+            <div class="slider-container">
+                <label for="fireSourceRange">Fire Source Range: </label>
+                <input type="range" id="fireSourceRange" min="0" max="600" value="0" step="10"><span id="fireSourceRangeValue"></span>
             </div>
             <div>
                 <label for="maxTemperature">Max Temperature:</label>
@@ -49,26 +82,7 @@
                     <option value="1">12000℃</option>
                 </select>
             </div>              
-            <div class="slider-container">
-                <label for="maxLifetime">Max Lifetime: </label>
-                <input type="range" id="maxLifetime" min="1.1" max="5" value="2" step="0.1"><span id="maxLifetimeValue"></span>
-            </div>
-            <div class="slider-container">
-                <label for="numParticles">Number of Particles: </label>
-                <input type="range" id="numParticles" min="10" max="2000" value="50" step="1"><span id="numParticlesValue"></span>
-            </div>
-            <div class="slider-container">
-                <label for="emissionRate">Emission Rate: </label>
-                <input type="range" id="emissionRate" min="2" max="20" value="3" step="1"><span id="emissionRateValue"></span>
-            </div>
-            <div class="slider-container">
-                <label for="buoyancyConstant">Buoyancy Constant: </label>
-                <input type="range" id="buoyancyConstant" min="-200" max="-10" value="-100" step="1"><span id="buoyancyConstantValue"></span>
-            </div>
-            <div class="slider-container">
-                <label for="particleSize">Particle Size: </label>
-                <input type="range" id="particleSize" min="1" max="30" value="10" step="1"><span id="particleSizeValue"></span>
-            </div>
+            
         </div>
     </div>
     <div id="fps"></div>
